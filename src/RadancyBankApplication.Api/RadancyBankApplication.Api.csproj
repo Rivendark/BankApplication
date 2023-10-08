@@ -7,7 +7,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Controllers\" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.0-rc.1.23419.6" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\RadancyBankApplication.Infrastructure\RadancyBankApplication.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>

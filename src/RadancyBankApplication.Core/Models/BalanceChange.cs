@@ -9,4 +9,5 @@ public class BalanceChange
    public Guid UserId { get; set; }
    public BalanceChangeType Type { get; set; }
    public decimal Amount { get; set; }
+   public DateTime CreatedAtUtc { get; set; }
 }

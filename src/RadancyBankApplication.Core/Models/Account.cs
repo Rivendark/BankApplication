@@ -6,4 +6,6 @@ public class Account
     public Guid UserId { get; set; }
     public string Name { get; set; }
     public decimal Balance { get; set; } = 0;
+    public DateTime CreatedAtUtc { get; set; }
+    public List<BalanceChange> BalanceChanges { get; set; }
 }

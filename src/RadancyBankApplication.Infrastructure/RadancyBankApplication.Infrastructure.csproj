@@ -6,4 +6,13 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.0-rc.1.23419.6" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\RadancyBankApplication.Application\RadancyBankApplication.Application.csproj" />
+      <ProjectReference Include="..\RadancyBankApplication.Core\RadancyBankApplication.Core.csproj" />
+    </ItemGroup>
+
 </Project>
