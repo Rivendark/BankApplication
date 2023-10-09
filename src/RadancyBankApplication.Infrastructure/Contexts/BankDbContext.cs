@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RadancyBankApplication.Core.Models;
+using RadancyBankApplication.Infrastructure.DBOs;
 
 namespace RadancyBankApplication.Infrastructure.Contexts;
 

@@ -1,15 +1,28 @@
 ﻿using RadancyBankApplication.Core.Enums;
+using RadancyBankApplication.Core.Models;
 
-namespace RadancyBankApplication.Core.Models;
+namespace RadancyBankApplication.Infrastructure.DBOs;
 
-public class BalanceChangeDbo(BalanceChange balanceChange)
+public class BalanceChangeDbo
 {
-   public Guid Id { get; set; } = balanceChange.Id;
-   public Guid AccountId { get; set; } = balanceChange.AccountId;
-   public Guid UserId { get; set; } = balanceChange.UserId;
-   public BalanceChangeType Type { get; set; } = balanceChange.Type;
-   public decimal Amount { get; set; } = balanceChange.Amount;
-   public DateTime CreatedAtUtc { get; set; } = balanceChange.CreatedAtUtc;
+   public Guid Id { get; set; }
+   public Guid AccountId { get; set; }
+   public Guid UserId { get; set; }
+   public BalanceChangeType Type { get; set; }
+   public decimal Amount { get; set; }
+   public DateTime CreatedAtUtc { get; set; }
+   
+   public BalanceChangeDbo() {}
+
+   public BalanceChangeDbo(BalanceChange balanceChange)
+   {
+      Id = balanceChange.Id;
+      AccountId = balanceChange.AccountId;
+      UserId = balanceChange.UserId;
+      Type = balanceChange.Type;
+      Amount = balanceChange.Amount;
+      CreatedAtUtc = balanceChange.CreatedAtUtc;
+   }
 
    public BalanceChange ToDomainModel()
    {

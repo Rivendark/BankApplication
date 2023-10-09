@@ -1,4 +1,6 @@
-﻿namespace RadancyBankApplication.Core.Models;
+﻿using RadancyBankApplication.Core.Models;
+
+namespace RadancyBankApplication.Infrastructure.DBOs;
 
 public class UserDbo
 {
@@ -6,7 +8,9 @@ public class UserDbo
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string Email { get; set; }
-    public List<AccountDbo> Accounts { get; set; }
+    public List<AccountDbo> Accounts { get; set; } = new ();
+    
+    public UserDbo() {}
 
     public UserDbo(User user)
     {
@@ -14,7 +18,7 @@ public class UserDbo
         FirstName = user.FirstName;
         LastName = user.LastName;
         Email = user.Email;
-        Accounts = user.Accounts.Select(x => new AccountDbo(x)).ToList();
+        Accounts = user.Accounts?.Select(x => new AccountDbo(x)).ToList() ?? new List<AccountDbo>();
     }
 
     public User ToDomainModel()

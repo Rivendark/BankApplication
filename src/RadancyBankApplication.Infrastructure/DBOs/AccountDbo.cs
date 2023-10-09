@@ -1,4 +1,6 @@
-﻿namespace RadancyBankApplication.Core.Models;
+﻿using RadancyBankApplication.Core.Models;
+
+namespace RadancyBankApplication.Infrastructure.DBOs;
 
 public class AccountDbo
 {
@@ -8,6 +10,8 @@ public class AccountDbo
     public decimal Balance { get; set; } = 0;
     public DateTime CreatedAtUtc { get; set; }
     public List<BalanceChangeDbo> BalanceChanges { get; set; }
+
+    public AccountDbo() { }
 
     public AccountDbo(Account account)
     {
