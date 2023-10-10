@@ -78,7 +78,7 @@ public class AccountController : ControllerBase
         return Ok(result);
     }
 
-    [HttpPut("withdraw")]
+    [HttpPost("withdraw")]
     public async Task<IActionResult> Withdraw([FromBody] BalanceChangeDto balanceChange, CancellationToken token)
     {
         var account = await _accountRepository.GetAccountAsync(balanceChange.AccountId, token);
@@ -98,6 +98,7 @@ public class AccountController : ControllerBase
                 balanceChangeModel.Type,
                 token);
             await _accountRepository.SaveBalanceChangeAsync(balanceChangeModel, token);
+            account = await _accountRepository.GetAccountAsync(balanceChange.AccountId, token);
         }
         catch (InsufficientAccountBalanceException afnEx)
         {
@@ -111,7 +112,7 @@ public class AccountController : ControllerBase
         return Accepted(account);
     }
 
-    [HttpPut("deposit")]
+    [HttpPost("deposit")]
     public async Task<IActionResult> Deposit([FromBody] BalanceChangeDto balanceChange, CancellationToken token)
     {
         var account = await _accountRepository.GetAccountAsync(balanceChange.AccountId, token);
@@ -131,6 +132,7 @@ public class AccountController : ControllerBase
                 balanceChangeModel.Type,
                 token);
             await _accountRepository.SaveBalanceChangeAsync(balanceChangeModel, token);
+            account = await _accountRepository.GetAccountAsync(balanceChange.AccountId, token);
         }
         catch (DepositLimitExceededException dleEx)
         {

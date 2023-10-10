@@ -10,7 +10,7 @@ public class AccountDbo
     public decimal Balance { get; set; } = 0;
     public DateTime CreatedAtUtc { get; set; }
     public DateTime DeletedAtUtc { get; set; }
-    public List<BalanceChangeDbo> BalanceChanges { get; set; }
+    public List<BalanceChangeDbo> BalanceChanges { get; set; } = new ();
 
     public AccountDbo() { }
 
@@ -21,6 +21,7 @@ public class AccountDbo
         Name = account.Name;
         Balance = account.Balance;
         BalanceChanges = account.BalanceChanges.Select(x => new BalanceChangeDbo(x)).ToList();
+        CreatedAtUtc = account.CreatedAtUtc;
     }
 
     public Account ToDomainModel()
@@ -32,7 +33,7 @@ public class AccountDbo
             Name = Name,
             Balance = Balance,
             CreatedAtUtc = CreatedAtUtc,
-            BalanceChanges = BalanceChanges.Select(x => x.ToDomainModel()).ToList()
+            BalanceChanges = BalanceChanges?.Select(x => x.ToDomainModel()).ToList()
         };
     }
 }

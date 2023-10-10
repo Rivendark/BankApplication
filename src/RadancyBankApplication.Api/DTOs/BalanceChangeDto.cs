@@ -6,13 +6,11 @@ namespace RadancyBankApplication.Api.DTOs;
 
 public class BalanceChangeDto
 {
-   [Required]
-   public Guid Id { get; init; }
+   public Guid Id { get; init; } = Guid.NewGuid();
    [Required]
    public Guid AccountId { get; init; }
    [Required]
    public Guid UserId { get; init; }
-   [Required]
    public BalanceChangeType Type { get; set; }
    [Required]
    [Range(0, Int32.MaxValue)]

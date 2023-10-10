@@ -18,6 +18,9 @@ public class AccountRepository(BankDbContext context) : IAccountRepository
             throw new AccountExistsException();
         }
 
+        account.Balance = 0;
+        account.CreatedAtUtc = DateTime.UtcNow;
+        
         await context.Accounts.AddAsync(new AccountDbo(account), token);
         await context.SaveChangesAsync(token);
     }

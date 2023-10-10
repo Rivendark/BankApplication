@@ -50,7 +50,7 @@ public class AccountValidationService : IAccountValidationService
 
     private void ValidateWithdrawalAccountBalancePercent(Account account, BalanceChange balanceChange)
     {
-        if (account.Balance / balanceChange.Amount > (decimal)0.9)
+        if (balanceChange.Amount / account.Balance > (decimal)0.9)
         {
             throw new WithdrawalPercentageExceededException();
         }

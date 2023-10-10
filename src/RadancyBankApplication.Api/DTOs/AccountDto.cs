@@ -10,8 +10,8 @@ public class AccountDto
     public Guid UserId { get; init; }
     public string Name { get; init; }
     public decimal Balance { get; init; } = 0;
-    public DateTime CreatedAtUtc { get; init; }= DateTime.UtcNow;
-    public List<BalanceChangeDto> BalanceChanges { get; init; }
+    public DateTime CreatedAtUtc { get; init; }
+    public List<BalanceChangeDto> BalanceChanges { get; init; } = new ();
     
     public AccountDto() {}
 
