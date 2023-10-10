@@ -7,21 +7,15 @@ namespace RadancyBankApplication.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class UserController : ControllerBase
+public class UserController(IUserRepository userRepository, IAccountRepository accountRepository)
+    : ControllerBase
 {
-    private readonly IUserRepository _userRepository;
-
-    public UserController(IUserRepository userRepository)
-    {
-        _userRepository = userRepository;
-    }
-
     [HttpPost("create")]
     public async Task<IActionResult> Create([FromBody] UserDto user, CancellationToken token)
     {
         try
         {
-            await _userRepository.CreateUserAsync(user.ToDomainModel(), token);
+            await userRepository.CreateUserAsync(user.ToDomainModel(), token);
         }
         catch (UserExistsException uex)
         {
@@ -36,7 +30,7 @@ public class UserController : ControllerBase
     {
         try
         {
-            await _userRepository.UpdateUserAsync(user.ToDomainModel(), token);
+            await userRepository.UpdateUserAsync(user.ToDomainModel(), token);
         }
         catch (UserNotFoundException unfEx)
         {
@@ -46,38 +40,53 @@ public class UserController : ControllerBase
         return Accepted(user);
     }
 
-    [HttpDelete("delete/{id:guid}")]
-    public async Task<IActionResult> Delete([FromQuery] Guid id, CancellationToken token)
+    [HttpDelete("delete/{userId:Guid}")]
+    public async Task<IActionResult> Delete([FromRoute] Guid userId, CancellationToken token)
     {
         try
         {
-            await _userRepository.DeleteUserAsync(id, token);
+            await userRepository.DeleteUserAsync(userId, token);
         }
         catch (UserNotFoundException unfEx)
         {
             return BadRequest(unfEx);
         }
 
-        return Accepted(id);
+        return Accepted();
     }
 
-    [HttpGet("users")]
+    [HttpGet("/api/users")]
     public async Task<IActionResult> GetUsers(CancellationToken token)
     {
-        var result = await _userRepository.GetUsersAsync(token);
+        var result = await userRepository.GetUsersAsync(token);
         return Ok(result.Select(x => new UserDto(x)).ToList());
     }
 
-    [HttpGet("{id:guid}")]
-    public async Task<IActionResult> GetUser([FromQuery] Guid id, CancellationToken token)
+    [HttpGet("{userId:Guid}")]
+    public async Task<IActionResult> GetUser([FromRoute] Guid userId, CancellationToken token)
     {
-        var result = await _userRepository.GetUserAsync(id, token);
+        var result = await userRepository.GetUserAsync(userId, token);
 
         if (result is null)
         {
-            return NotFound(id);
+            return NotFound(userId);
         }
         
         return Ok(new UserDto(result));
+    }
+
+    [HttpGet("{userId:Guid}/accounts")]
+    public async Task<IActionResult> GetUserAccounts([FromRoute] Guid userId, CancellationToken token)
+    {
+        var result = await userRepository.GetUserAsync(userId, token);
+
+        if (result is null)
+        {
+            return NotFound(userId);
+        }
+
+        var accounts = await accountRepository.GetUserAccountsAsync(userId, token);
+
+        return Ok(accounts.Select(x => new AccountDto(x)).ToList());
     }
 }

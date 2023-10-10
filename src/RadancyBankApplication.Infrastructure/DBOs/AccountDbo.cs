@@ -9,6 +9,7 @@ public class AccountDbo
     public string Name { get; set; }
     public decimal Balance { get; set; } = 0;
     public DateTime CreatedAtUtc { get; set; }
+    public DateTime DeletedAtUtc { get; set; }
     public List<BalanceChangeDbo> BalanceChanges { get; set; }
 
     public AccountDbo() { }

@@ -13,6 +13,7 @@ namespace RadancyBankApplication.UnitTests.Controllers;
 public class UserControllerTests
 {
     private Mock<IUserRepository> _userRepositoryMock;
+    private Mock<IAccountRepository> _accountRepositoryMock;
     private UserController _controller;
     private CancellationTokenSource _cts;
     private static readonly Guid _userId = Guid.NewGuid();
@@ -30,7 +31,8 @@ public class UserControllerTests
     {
         _cts = new CancellationTokenSource();
         _userRepositoryMock = new Mock<IUserRepository>();
-        _controller = new UserController(_userRepositoryMock.Object);
+        _accountRepositoryMock = new Mock<IAccountRepository>();
+        _controller = new UserController(_userRepositoryMock.Object, _accountRepositoryMock.Object);
     }
 
     [Test]

@@ -36,17 +36,17 @@ public class UserRepository(BankDbContext context) : IUserRepository
 
     public async Task UpdateUserAsync(User user, CancellationToken token)
     {
-        var existingUser = await FindUserAsync(user.Id, token);
-        if (existingUser is null)
+        var result = await FindUserAsync(user.Id, token);
+        if (result is null)
         {
             throw new UserNotFoundException();
         }
 
-        existingUser.FirstName = user.FirstName;
-        existingUser.LastName = user.LastName;
-        existingUser.Email = user.Email;
+        result.FirstName = user.FirstName;
+        result.LastName = user.LastName;
+        result.Email = user.Email;
 
-        context.Users.Update(existingUser);
+        context.Users.Update(result);
         await context.SaveChangesAsync(token);
     }
 
