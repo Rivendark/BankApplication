@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.0-rc.1.23419.6" />
+      <PackageReference Include="Serilog" Version="3.1.0-dev-02078" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\BankApplication.Application\BankApplication.Application.csproj" />
+      <ProjectReference Include="..\BankApplication.Core\BankApplication.Core.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <InternalsVisibleTo Include="BankApplication.ArchitectureTests" />
+        <InternalsVisibleTo Include="BankApplication.UnitTests" />
+    </ItemGroup>
+    
+</Project>

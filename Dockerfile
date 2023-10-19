@@ -27,4 +27,4 @@ COPY --from=publish /app .
 
 ENV ASPNETCORE_URLS http://*5000
 ENV ASPNETCORE_ENVIRONMENT docker
-ENTRYPOINT ["dotnet", "RadancyBankApplication.Api.dll"]
+ENTRYPOINT ["dotnet", "BankApplication.Api.dll"]

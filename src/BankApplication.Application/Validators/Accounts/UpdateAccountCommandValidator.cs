@@ -1,0 +1,23 @@
+﻿using BankApplication.Application.Commands.Accounts;
+using FluentValidation;
+
+namespace BankApplication.Application.Validators.Accounts;
+
+public class UpdateAccountCommandValidator : AbstractValidator<UpdateAccountCommand>
+{
+    public UpdateAccountCommandValidator()
+    {
+        RuleFor(cmd => cmd.CorrelationId)
+            .NotNull()
+            .NotEqual(Guid.Empty);
+        
+        RuleFor(cmd => cmd.AccountId)
+            .NotNull()
+            .NotEqual(Guid.Empty);
+        
+        RuleFor(cmd => cmd.AccountName)
+            .NotNull()
+            .MinimumLength(1)
+            .MaximumLength(255);
+    }
+}
