@@ -6,10 +6,9 @@ using BankApplication.Core.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-
 using System.Net;
 
-namespace BankApplication.UnitTests.Controllers;
+namespace BankApplication.Tests.UnitTests.Controllers;
 
 [TestFixture]
 public class UserControllerTests
@@ -19,7 +18,7 @@ public class UserControllerTests
     private CancellationTokenSource _cts;
     private static readonly Guid UserId = Guid.NewGuid();
 
-    private UserDto _userDto = new UserDto
+    private UserDto _userDto = new ()
     {
         Email = "firstUser@test.com",
         FirstName = "first",

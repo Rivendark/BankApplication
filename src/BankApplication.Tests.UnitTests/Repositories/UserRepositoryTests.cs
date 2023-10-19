@@ -1,11 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
-using BankApplication.Core.Exceptions;
+﻿using BankApplication.Core.Exceptions;
 using BankApplication.Core.Models;
 using BankApplication.Infrastructure.Contexts;
 using BankApplication.Infrastructure.DBOs;
 using BankApplication.Infrastructure.Repositories;
+using Microsoft.EntityFrameworkCore;
 
-namespace BankApplication.UnitTests.Repositories;
+namespace BankApplication.Tests.UnitTests.Repositories;
 
 [TestFixture]
 public class UserRepositoryTests
@@ -101,7 +101,7 @@ public class UserRepositoryTests
     {
         var result = await _userRepository.GetUserAsync(Guid.NewGuid(), _cts.Token);
         
-        Assert.That(result, Is.Not.Null);
+        Assert.That(result, Is.Null);
     }
 
     [Test]

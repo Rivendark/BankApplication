@@ -1,4 +1,4 @@
-﻿namespace BankApplication.ArchitectureTests;
+﻿namespace BankApplication.Tests.ArchitectureTests;
 
 [TestFixture]
 public class MethodNamingConventionTests

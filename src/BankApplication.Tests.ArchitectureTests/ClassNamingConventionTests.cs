@@ -1,7 +1,7 @@
 using NetArchTest.Rules;
 using BankApplication.Application.Mediatr;
 
-namespace BankApplication.ArchitectureTests;
+namespace BankApplication.Tests.ArchitectureTests;
 
 [TestFixture]
 public class ClassNamingConventionTests

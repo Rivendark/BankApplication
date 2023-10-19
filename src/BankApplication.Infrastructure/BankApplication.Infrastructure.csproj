@@ -17,8 +17,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <InternalsVisibleTo Include="BankApplication.ArchitectureTests" />
-        <InternalsVisibleTo Include="BankApplication.UnitTests" />
+        <InternalsVisibleTo Include="BankApplication.Tests.ArchitectureTests" />
+        <InternalsVisibleTo Include="BankApplication.Tests.UnitTests" />
     </ItemGroup>
     
 </Project>

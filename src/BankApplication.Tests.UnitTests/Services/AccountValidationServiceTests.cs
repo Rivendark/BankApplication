@@ -3,7 +3,7 @@ using BankApplication.Core.Enums;
 using BankApplication.Core.Exceptions;
 using BankApplication.Core.Models;
 
-namespace BankApplication.UnitTests.Services;
+namespace BankApplication.Tests.UnitTests.Services;
 
 [TestFixture]
 public class AccountValidationServiceTests
@@ -105,12 +105,5 @@ public class AccountValidationServiceTests
         };
         
         Assert.Throws<WithdrawalPercentageExceededException>(() => _service.ValidateWithdrawal(_account, balanceChange));
-    }
-
-    [TearDown]
-    public void AfterEachTest()
-    {
-        _service = null;
-        _account = null;
     }
 }
