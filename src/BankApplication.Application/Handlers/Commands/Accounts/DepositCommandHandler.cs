@@ -61,7 +61,7 @@ public sealed class DepositCommandHandler(
         }
         catch (Exception ex)
         {
-            logger.LogInformation($"{GetType()}:{ex.Message}", request);
+            logger.LogInformation($"{GetType().Name}:{ex.Message}", request);
 
             throw;
         }

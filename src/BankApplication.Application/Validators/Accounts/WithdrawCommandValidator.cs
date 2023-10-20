@@ -23,6 +23,6 @@ public class WithdrawCommandValidator : AbstractValidator<WithdrawCommand>
             .NotNull()
             .NotEmpty()
             .GreaterThanOrEqualTo((decimal)0.01)
-            .PrecisionScale(2, 32, true);
+            .PrecisionScale(32, 2, true);
     }
 }

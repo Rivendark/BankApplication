@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "cec7bf5d-b241-4613-8542-a2d853ba0190",
-		"name": "RadancyBankTestCollection",
+		"name": "BankTestCollection",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -14,7 +14,6 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "9cea01a1-d4fd-42d4-8baa-6c94fdabe7fb",
 								"exec": [
 									"pm.environment.set(\"port\", 5000);"
 								],
@@ -24,8 +23,11 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "2d6f231c-e795-4b20-b4ce-e99766dfdf51",
 								"exec": [
+									"pm.test(\"Status code is 202\", () => {\r",
+									"  pm.expect(pm.response.code).to.eql(202);\r",
+									"});\r",
+									"\r",
 									"var userBody = pm.response.json();\r",
 									"pm.environment.set(\"userId\", userBody.id)"
 								],
@@ -38,7 +40,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"FirstName\": \"New\",\r\n    \"LastName\": \"User\",\r\n    \"Email\": \"test2.user@test.com\"\r\n}",
+							"raw": "{\r\n    \"CorrelationId\": \"{{$guid}}\",\r\n    \"FirstName\": \"New\",\r\n    \"LastName\": \"User\",\r\n    \"Email\": \"test2.user@test.com\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -46,15 +48,14 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:{{port}}/api/user/create",
+							"raw": "localhost:{{port}}/api/user",
 							"host": [
 								"localhost"
 							],
 							"port": "{{port}}",
 							"path": [
 								"api",
-								"user",
-								"create"
+								"user"
 							]
 						}
 					},
@@ -66,7 +67,6 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "d4830b09-2a2e-4f92-9ce3-69c138f02942",
 								"exec": [
 									""
 								],
@@ -82,7 +82,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"FirstName\": \"Delete\",\r\n    \"LastName\": \"User\",\r\n    \"Email\": \"test2.user@test.com\"\r\n}",
+							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -111,7 +111,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"FirstName\": \"Delete\",\r\n    \"LastName\": \"User\",\r\n    \"Email\": \"test2.user@test.com\"\r\n}",
+							"raw": "{\r\n    \"CorrelationId\": \"{{$guid}}\",\r\n    \"UserId\": \"{{userId}}\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -119,23 +119,20 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:{{port}}/api/user/delete/{{userId}}",
+							"raw": "localhost:{{port}}/api/user",
 							"host": [
 								"localhost"
 							],
 							"port": "{{port}}",
 							"path": [
 								"api",
-								"user",
-								"delete",
-								"{{userId}}"
+								"user"
 							]
 						}
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "Account Actions",
@@ -146,7 +143,6 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "77fb7416-3a14-4668-9374-234d0073c26e",
 								"exec": [
 									"pm.environment.set(\"port\", 5000);"
 								],
@@ -156,7 +152,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "368dd7c5-a015-4c23-9824-2510b5b0c2a1",
 								"exec": [
 									"var userBody = pm.response.json();\r",
 									"pm.environment.set(\"userId\", userBody.id)"
@@ -170,7 +165,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"FirstName\": \"New\",\r\n    \"LastName\": \"User\",\r\n    \"Email\": \"test2.user@test.com\"\r\n}",
+							"raw": "{\r\n    \"CorrelationId\": \"{{$guid}}\",\r\n    \"FirstName\": \"New\",\r\n    \"LastName\": \"User\",\r\n    \"Email\": \"test2.user@test.com\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -178,15 +173,14 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:{{port}}/api/user/create",
+							"raw": "localhost:{{port}}/api/user",
 							"host": [
 								"localhost"
 							],
 							"port": "{{port}}",
 							"path": [
 								"api",
-								"user",
-								"create"
+								"user"
 							]
 						}
 					},
@@ -198,7 +192,6 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "a0c09c7b-3354-4f85-90f3-fa33fa160506",
 								"exec": [
 									""
 								],
@@ -208,7 +201,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "846777f3-5a91-4f9f-8cfd-1ee7730e3272",
 								"exec": [
 									"var account = pm.response.json();\r",
 									"pm.environment.set(\"accountId\", account.id)"
@@ -222,7 +214,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"UserId\": \"{{userId}}\",\r\n    \"Name\": \"Account {{userId}}\"\r\n}",
+							"raw": "{\r\n    \"CorrelationId\": \"{{$guid}}\",\r\n    \"UserId\": \"{{userId}}\",\r\n    \"Name\": \"Account {{userId}}\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -230,15 +222,14 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:{{port}}/api/account/create",
+							"raw": "localhost:{{port}}/api/account",
 							"host": [
 								"localhost"
 							],
 							"port": "{{port}}",
 							"path": [
 								"api",
-								"account",
-								"create"
+								"account"
 							]
 						}
 					},
@@ -250,7 +241,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "95e36367-9405-4aaf-848d-92b076e3c6fe",
 								"exec": [
 									"pm.test(\"Status code is 200\", () => {\r",
 									"  pm.expect(pm.response.code).to.eql(200);\r",
@@ -272,16 +262,15 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:{{port}}/api/user/{{userId}}/accounts",
+							"raw": "localhost:{{port}}/api/accounts/{{userId}}",
 							"host": [
 								"localhost"
 							],
 							"port": "{{port}}",
 							"path": [
 								"api",
-								"user",
-								"{{userId}}",
-								"accounts"
+								"accounts",
+								"{{userId}}"
 							]
 						}
 					},
@@ -293,7 +282,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "4de3487c-c374-4c1a-b178-0d03790d7414",
 								"exec": [
 									"pm.test(\"Status code is 200\", () => {\r",
 									"  pm.expect(pm.response.code).to.eql(200);\r",
@@ -335,7 +323,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "0f1e5edc-2c37-4a66-85fa-b0016832552b",
 								"exec": [
 									"pm.test(\"Status code is 202\", () => {\r",
 									"  pm.expect(pm.response.code).to.eql(202);\r",
@@ -360,7 +347,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"AccountId\": \"{{accountId}}\",\r\n    \"UserId\": \"{{userId}}\",\r\n    \"Amount\": 5000\r\n}",
+							"raw": "{\r\n    \"CorrelationId\": \"{{$guid}}\",\r\n    \"AccountId\": \"{{accountId}}\",\r\n    \"UserId\": \"{{userId}}\",\r\n    \"Amount\": 5000.00\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -388,7 +375,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "423699ad-3248-425d-bf61-0626fce64b83",
 								"exec": [
 									"pm.test(\"Status code is 400\", () => {\r",
 									"  pm.expect(pm.response.code).to.eql(400);\r",
@@ -403,7 +389,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"AccountId\": \"{{accountId}}\",\r\n    \"UserId\": \"{{userId}}\",\r\n    \"Amount\": 50000\r\n}",
+							"raw": "{\r\n    \"CorrelationId\": \"{{$guid}}\",\r\n    \"AccountId\": \"{{accountId}}\",\r\n    \"UserId\": \"{{userId}}\",\r\n    \"Amount\": 50000\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -431,7 +417,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "37e35b47-70eb-4a40-8e00-98694331daab",
 								"exec": [
 									"pm.test(\"Status code is 400\", () => {\r",
 									"  pm.expect(pm.response.code).to.eql(400);\r",
@@ -446,7 +431,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"AccountId\": \"{{accountId}}\",\r\n    \"UserId\": \"{{userId}}\",\r\n    \"Amount\": 4600\r\n}",
+							"raw": "{\r\n    \"CorrelationId\": \"{{$guid}}\",\r\n    \"AccountId\": \"{{accountId}}\",\r\n    \"UserId\": \"{{userId}}\",\r\n    \"Amount\": 4600\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -474,7 +459,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "784d3ce7-6676-464f-bda4-f023a43216d9",
 								"exec": [
 									"pm.test(\"Status code is 202\", () => {\r",
 									"  pm.expect(pm.response.code).to.eql(202);\r",
@@ -499,7 +483,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"AccountId\": \"{{accountId}}\",\r\n    \"UserId\": \"{{userId}}\",\r\n    \"Amount\": 4400\r\n}",
+							"raw": "{\r\n    \"CorrelationId\": \"{{$guid}}\",\r\n    \"AccountId\": \"{{accountId}}\",\r\n    \"UserId\": \"{{userId}}\",\r\n    \"Amount\": 4400\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -527,7 +511,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "3a972fff-1f89-49bb-ac55-9701a1d36d42",
 								"exec": [
 									"pm.test(\"Status code is 400\", () => {\r",
 									"  pm.expect(pm.response.code).to.eql(400);\r",
@@ -542,7 +525,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"AccountId\": \"{{accountId}}\",\r\n    \"UserId\": \"{{userId}}\",\r\n    \"Amount\": 510\r\n}",
+							"raw": "{\r\n    \"CorrelationId\": \"{{$guid}}\",\r\n    \"AccountId\": \"{{accountId}}\",\r\n    \"UserId\": \"{{userId}}\",\r\n    \"Amount\": 510\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -570,7 +553,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "ac06bcaa-4625-4873-bc96-d42f0bc204d0",
 								"exec": [
 									"pm.test(\"Status code is 202\", () => {\r",
 									"  pm.expect(pm.response.code).to.eql(202);\r",
@@ -583,8 +565,17 @@
 					"request": {
 						"method": "DELETE",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"CorrelationId\": \"{{$guid}}\",\r\n    \"UserId\": \"{{userId}}\",\r\n    \"AccountId\": \"{{accountId}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "localhost:{{port}}/api/account/delete/{{accountId}}",
+							"raw": "localhost:{{port}}/api/account/",
 							"host": [
 								"localhost"
 							],
@@ -592,8 +583,7 @@
 							"path": [
 								"api",
 								"account",
-								"delete",
-								"{{accountId}}"
+								""
 							]
 						}
 					},
@@ -605,7 +595,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "f905b7e2-afad-418a-9a59-86b3f5955651",
 								"exec": [
 									"pm.test(\"Status code is 404\", () => {\r",
 									"  pm.expect(pm.response.code).to.eql(404);\r",
@@ -640,7 +629,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"FirstName\": \"Delete\",\r\n    \"LastName\": \"User\",\r\n    \"Email\": \"test2.user@test.com\"\r\n}",
+							"raw": "{\r\n    \"CorrelationId\": \"{{$guid}}\",\r\n    \"UserId\": \"{{userId}}\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -648,24 +637,20 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:{{port}}/api/user/delete/{{userId}}",
+							"raw": "localhost:{{port}}/api/user",
 							"host": [
 								"localhost"
 							],
 							"port": "{{port}}",
 							"path": [
 								"api",
-								"user",
-								"delete",
-								"{{userId}}"
+								"user"
 							]
 						}
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		}
-	],
-	"protocolProfileBehavior": {}
+	]
 }

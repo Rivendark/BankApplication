@@ -19,7 +19,7 @@ public sealed class GetUserQueryHandler(IUserRepository userRepository, ILogger<
             }
             
             var ex = new UserNotFoundException();
-            logger.LogInformation($"{GetType()}:{ex.Message}", request);
+            logger.LogInformation($"{GetType().Name}:{ex.Message}", request);
             throw ex;
     }
 }

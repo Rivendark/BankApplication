@@ -20,7 +20,7 @@ public sealed class GetAccountQueryHandler(IAccountRepository accountRepository,
         }
 
         var ex = new AccountNotFoundException();
-        logger.LogInformation($"{GetType()}:{ex.Message}", request);
+        logger.LogInformation($"{GetType().Name}:{ex.Message}", request);
         throw ex;
     }
 }

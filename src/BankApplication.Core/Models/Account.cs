@@ -8,5 +8,5 @@ public class Account
     public decimal Balance { get; set; } = 0;
     public DateTime CreatedAtUtc { get; set; } = DateTime.UtcNow;
     public DateTime DeletedAtUtc { get; set; }
-    public List<BalanceChange> BalanceChanges { get; set; }
+    public List<BalanceChange> BalanceChanges { get; set; } = new ();
 }

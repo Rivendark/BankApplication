@@ -22,7 +22,7 @@ public sealed class UpdateAccountCommandHandler(
             var account = await accountRepository.UpdateAccountInformationAsync(new Account
             {
                 Id = request.AccountId,
-                Name = request.AccountName
+                Name = request.Name
             }, cancellationToken);
 
             await publisher.Publish(new AccountUpdatedNotification(account, request.CorrelationId), cancellationToken);
@@ -31,7 +31,7 @@ public sealed class UpdateAccountCommandHandler(
         }
         catch (Exception ex)
         { 
-            logger.LogInformation($"{GetType()}:{ex.Message}", request);
+            logger.LogInformation($"{GetType().Name}:{ex.Message}", request);
 
             throw;
         }

@@ -15,7 +15,7 @@ public class CreateAccountCommandValidator : AbstractValidator<CreateAccountComm
             .NotNull()
             .NotEqual(Guid.Empty);
         
-        RuleFor(cmd => cmd.AccountName)
+        RuleFor(cmd => cmd.Name)
             .NotNull()
             .MinimumLength(1)
             .MaximumLength(255);

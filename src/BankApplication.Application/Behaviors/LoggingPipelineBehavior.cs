@@ -10,18 +10,18 @@ public class LoggingPipelineBehavior<TRequest, TResponse>
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next,
         CancellationToken cancellationToken) 
     {
-        logger.LogInformation($"{GetType()}: Handling {typeof(TRequest).Name}");
+        logger.LogInformation($"{GetType().Name}: Handling {typeof(TRequest).Name}");
         try
         {
             var response = await next();
 
-            logger.LogInformation($"{GetType()}: Handled {typeof(TRequest).Name}. Response: {typeof(TResponse).Name}");
+            logger.LogInformation($"{GetType().Name}: Handled {typeof(TRequest).Name}. Response: {typeof(TResponse).Name}");
 
             return response;
         }
         catch (Exception ex)
         {
-            logger.LogWarning($"{GetType()}: Handling {typeof(TRequest).Name} Failed. Message: {ex.Message}");
+            logger.LogWarning($"{GetType().Name}: Handling {typeof(TRequest).Name} Failed. Message: {ex.Message}");
             throw;
         }
     }

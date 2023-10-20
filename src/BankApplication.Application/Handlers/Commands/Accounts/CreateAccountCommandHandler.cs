@@ -22,7 +22,8 @@ public sealed class CreateAccountCommandHandler(
             var account = await accountRepository.CreateAccountAsync(new Account
             {
                 Id = Guid.NewGuid(),
-                Name = request.AccountName
+                UserId = request.UserId,
+                Name = request.Name
             }, cancellationToken);
 
             await publisher.Publish(new AccountCreatedNotification(account, request.CorrelationId), cancellationToken);
@@ -31,7 +32,7 @@ public sealed class CreateAccountCommandHandler(
         }
         catch (Exception ex)
         {
-            logger.LogInformation($"{GetType()}:{ex.Message}", request);
+            logger.LogInformation($"{GetType().Name}:{ex.Message}", request);
 
             throw;
         }

@@ -25,6 +25,6 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
 
-ENV ASPNETCORE_URLS http://*5000
+ENV ASPNETCORE_URLS http://+:5000
 ENV ASPNETCORE_ENVIRONMENT docker
 ENTRYPOINT ["dotnet", "BankApplication.Api.dll"]

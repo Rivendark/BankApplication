@@ -7,8 +7,6 @@ namespace BankApplication.Application.Middlewares;
 
 public abstract class BaseExceptionHandlerMiddleware(RequestDelegate next)
 {
-    private static readonly ILogger Logger = Log.ForContext(MethodBase.GetCurrentMethod()?.DeclaringType);
-
     public abstract (HttpStatusCode? code, string message) GetResponse(Exception exception, HttpContext context);
 
     public async Task Invoke(HttpContext context)
@@ -19,8 +17,6 @@ public abstract class BaseExceptionHandlerMiddleware(RequestDelegate next)
         }
         catch (Exception exception)
         {
-            // log the error
-            Logger.Error(exception, "error during executing {Context}", context.Request.Path.Value);
             var response = context.Response;
             response.ContentType = "application/json";
             

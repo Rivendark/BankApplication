@@ -14,42 +14,21 @@ public class UserController(ISender sender)
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateUserCommand command, CancellationToken token)
     {
-        try
-        {
-            var result = await sender.Send(command, token);
-            return Accepted(result);
-        }
-        catch (UserExistsException uex)
-        {
-            return BadRequest(uex);
-        }
+        var result = await sender.Send(command, token);
+        return Accepted(result);
     }
 
     [HttpPut]
     public async Task<IActionResult> Update([FromBody] UpdateUserCommand command, CancellationToken token)
     {
-        try
-        {
-            return Accepted(await sender.Send(command, token));
-        }
-        catch (UserNotFoundException unfEx)
-        {
-            return BadRequest(unfEx);
-        }
+        return Accepted(await sender.Send(command, token));
     }
 
     [HttpDelete]
     public async Task<IActionResult> Delete([FromBody] DeleteUserCommand command, CancellationToken token)
     {
-        try
-        {
-            await sender.Send(command, token);
-            return Accepted();
-        }
-        catch (UserNotFoundException unfEx)
-        {
-            return BadRequest(unfEx);
-        }
+        await sender.Send(command, token);
+        return Accepted();
     }
 
     [HttpGet("/api/users")]
@@ -70,19 +49,12 @@ public class UserController(ISender sender)
         CancellationToken token,
         [FromQuery] Guid? correlationId = null)
     {
-        try
+        var result = await sender.Send(new GetUserQuery
         {
-            var result = await sender.Send(new GetUserQuery
-            {
-                UserId = userId,
-                CorrelationId = correlationId ?? Guid.NewGuid()
-            }, token);
+            UserId = userId,
+            CorrelationId = correlationId ?? Guid.NewGuid()
+        }, token);
 
-            return Ok(result);
-        }
-        catch (UserNotFoundException _)
-        {
-            return NotFound(userId);
-        }
+        return Ok(result);
     }
 }

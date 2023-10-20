@@ -20,8 +20,14 @@ internal sealed class AccountDbo
         UserId = account.UserId;
         Name = account.Name;
         Balance = account.Balance;
-        BalanceChanges = account.BalanceChanges.Select(x => new BalanceChangeDbo(x)).ToList();
         CreatedAtUtc = account.CreatedAtUtc;
+
+        if (account.BalanceChanges?.Count != 0)
+        {
+            BalanceChanges = account.BalanceChanges
+                .Select(x => new BalanceChangeDbo(x))
+                .ToList();
+        }
     }
 
     public Account ToDomainModel()
