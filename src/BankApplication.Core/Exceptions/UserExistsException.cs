@@ -1,6 +1,6 @@
 ﻿namespace BankApplication.Core.Exceptions;
 
-public class UserExistsException : Exception
+public sealed class UserExistsException : Exception
 {
     private new const string Message = "User already exists.";
 

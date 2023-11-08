@@ -2,12 +2,12 @@
 
 namespace BankApplication.Core.Models;
 
-public class BalanceChange
+public sealed class BalanceChange
 {
-   public Guid Id { get; set; }
-   public Guid AccountId { get; set; }
-   public Guid UserId { get; set; }
-   public BalanceChangeType Type { get; set; }
-   public decimal Amount { get; set; }
-   public DateTime CreatedAtUtc { get; set; }
+   public Guid Id { get; init; }
+   public Guid AccountId { get; init; }
+   public Guid UserId { get; init; }
+   public BalanceChangeType Type { get; init; }
+   public decimal Amount { get; init; }
+   public DateTime CreatedAtUtc { get; init; }
 }

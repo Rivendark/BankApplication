@@ -12,7 +12,7 @@ internal sealed class BalanceChangeDbo
    public decimal Amount { get; set; }
    public DateTime CreatedAtUtc { get; set; }
    
-   public BalanceChangeDbo() {}
+   private BalanceChangeDbo() {}
 
    public BalanceChangeDbo(BalanceChange balanceChange)
    {
@@ -22,6 +22,25 @@ internal sealed class BalanceChangeDbo
       Type = balanceChange.Type;
       Amount = balanceChange.Amount;
       CreatedAtUtc = balanceChange.CreatedAtUtc;
+   }
+
+   public static BalanceChangeDbo Create(
+      Guid id,
+      Guid accountId,
+      Guid userId,
+      BalanceChangeType type,
+      decimal amount = 0,
+      DateTime? createdAtUtc = null)
+   {
+      return new BalanceChangeDbo
+      {
+         Id = id,
+         AccountId = accountId,
+         UserId = userId,
+         Type = type,
+         Amount = amount,
+         CreatedAtUtc = createdAtUtc ?? DateTime.UtcNow
+      };
    }
 
    public BalanceChange ToDomainModel()

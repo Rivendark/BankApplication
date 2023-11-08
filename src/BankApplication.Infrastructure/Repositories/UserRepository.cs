@@ -28,7 +28,7 @@ public sealed class UserRepository(BankDbContext context) : IUserRepository
     {
         var result = await FindUserAsync(id, token);
 
-        return result?.ToDomainModel();
+        return result?.DeletedAtUtc != null ? null : result.ToDomainModel();
     }
 
     public async Task<IReadOnlyCollection<User>> GetUsersAsync(List<Guid> ids, CancellationToken token)
@@ -79,8 +79,9 @@ public sealed class UserRepository(BankDbContext context) : IUserRepository
         {
             throw new UserNotFoundException();
         }
-
-        context.Users.Remove(existingUser);
+        
+        existingUser.DeletedAtUtc = DateTime.UtcNow;
+        context.Users.Update(existingUser);
         await context.SaveChangesAsync(token);
     }
 

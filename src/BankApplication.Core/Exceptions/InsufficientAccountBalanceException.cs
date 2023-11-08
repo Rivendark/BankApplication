@@ -1,6 +1,6 @@
 ﻿namespace BankApplication.Core.Exceptions;
 
-public class InsufficientAccountBalanceException : Exception
+public sealed class InsufficientAccountBalanceException : Exception
 {
     private new const string Message = "Insufficient Account Balance.";
 

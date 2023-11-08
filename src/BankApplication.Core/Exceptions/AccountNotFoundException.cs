@@ -1,6 +1,6 @@
 ﻿namespace BankApplication.Core.Exceptions;
 
-public class AccountNotFoundException : Exception
+public sealed class AccountNotFoundException : Exception
 {
     private new const string Message = "Account not found.";
 

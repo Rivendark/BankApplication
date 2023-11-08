@@ -8,6 +8,7 @@ public class BankDbContext : DbContext
     internal DbSet<UserDbo> Users { get; set; }
     internal DbSet<AccountDbo> Accounts { get; set; }
     internal DbSet<BalanceChangeDbo> BalanceChanges { get; set; }
+    internal DbSet<AccountLockDbo> AccountLocks { get; set; }
 
     public BankDbContext(DbContextOptions<BankDbContext> options) : base(options) { }
 
@@ -22,5 +23,9 @@ public class BankDbContext : DbContext
             .HasMany(e => e.BalanceChanges)
             .WithOne()
             .HasForeignKey(e => e.AccountId);
+
+        modelBuilder.Entity<AccountLockDbo>()
+            .HasIndex(al => al.AccountId)
+            .IsUnique();
     }
 }

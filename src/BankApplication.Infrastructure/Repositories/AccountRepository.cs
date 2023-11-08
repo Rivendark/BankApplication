@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using BankApplication.Application.Repositories;
-using BankApplication.Core.Enums;
 using BankApplication.Core.Exceptions;
 using BankApplication.Core.Models;
 using BankApplication.Infrastructure.Contexts;
@@ -30,7 +29,7 @@ public sealed class AccountRepository(BankDbContext context) : IAccountRepositor
 
     public async Task<List<Account>> GetUserAccountsAsync(Guid userId, CancellationToken token)
     {
-        var accounts = await context.Accounts.Where(x => x.UserId == userId)
+        var accounts = await context.Accounts.Where(x => x.UserId == userId && x.DeletedAtUtc == null)
             .ToListAsync(token);
 
         return accounts.Count == 0 ? new List<Account>()
@@ -41,7 +40,7 @@ public sealed class AccountRepository(BankDbContext context) : IAccountRepositor
     {
         var result = await FindAccountAsync(id, token);
 
-        return result?.ToDomainModel();
+        return result?.DeletedAtUtc != null ? null : result?.ToDomainModel();
     }
 
     public async Task<Account> UpdateAccountInformationAsync(Account account, CancellationToken token)
@@ -53,7 +52,7 @@ public sealed class AccountRepository(BankDbContext context) : IAccountRepositor
             throw new AccountNotFoundException();
         }
 
-        result.Name = account.Name;
+        result.Name = account.Name ?? string.Empty;
 
         context.Accounts.Update(result);
         await context.SaveChangesAsync(token);
@@ -61,28 +60,22 @@ public sealed class AccountRepository(BankDbContext context) : IAccountRepositor
         return result.ToDomainModel();
     }
 
-    public async Task<Account> UpdateAccountBalanceAsync(BalanceChange balanceChange, CancellationToken token)
+    public async Task<Account> UpdateAccountBalanceAsync(Account account, BalanceChange balanceChange, CancellationToken token)
     {
-        var result = await FindAccountAsync(balanceChange.AccountId, token);
+        var result = await FindAccountAsync(account.Id, token);
 
         if (result is null)
         {
             throw new AccountNotFoundException();
         }
 
-        switch (balanceChange.Type)
-        {
-            case BalanceChangeType.Withdrawal:
-                result.Balance -= balanceChange.Amount;
-                break;
-            case BalanceChangeType.Deposit:
-                result.Balance += balanceChange.Amount;
-                break;
-            default:
-                throw new ArgumentOutOfRangeException(nameof(balanceChange.Type), balanceChange.Type, "Unknown BalanceChangeType encountered.");
-        }
+        var balanceChangeDbo = new BalanceChangeDbo(balanceChange);
+
+        result.Balance = account.Balance;
+        result.BalanceChanges.Add(balanceChangeDbo);
         
         context.Accounts.Update(result);
+        await context.BalanceChanges.AddAsync(balanceChangeDbo, token);
         await context.SaveChangesAsync(token);
 
         return result.ToDomainModel();
@@ -96,15 +89,8 @@ public sealed class AccountRepository(BankDbContext context) : IAccountRepositor
             throw new AccountNotFoundException();
         }
 
-        context.Accounts.Remove(result);
-        await context.SaveChangesAsync(token);
-        
-        
-    }
-
-    public async Task SaveBalanceChangeAsync(BalanceChange balanceChange, CancellationToken token)
-    {
-        await context.BalanceChanges.AddAsync(new BalanceChangeDbo(balanceChange), token);
+        result.DeletedAtUtc = DateTime.UtcNow;
+        context.Accounts.Update(result);
         await context.SaveChangesAsync(token);
     }
 

@@ -1,6 +1,6 @@
 ﻿namespace BankApplication.Core.Exceptions;
 
-public class AccountExistsException : Exception
+public sealed class AccountExistsException : Exception
 {
     private new const string Message = "Account already exists.";
     

@@ -30,13 +30,7 @@ public class UserRepositoryTests
         _context.Database.EnsureDeleted();
         _context.Database.EnsureCreated();
 
-        _firstUser = new UserDbo
-        {
-            Id = _userId,
-            Email = "firstUser@test.com",
-            FirstName = "First",
-            LastName = "User"
-        };
+        _firstUser = UserDbo.Create(_userId,"First","User", "firstUser@test.com");
         
         _context.Users.Add(_firstUser);
         await _context.SaveChangesAsync();

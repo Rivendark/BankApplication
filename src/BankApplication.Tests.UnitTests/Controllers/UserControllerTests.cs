@@ -66,7 +66,7 @@ public class UserControllerTests
     }
 
     [Test]
-    public async Task Should_Return_BadRequest_On_Create_If_User_Id_Exists()
+    public void Should_Throw_UserExistsException_On_Create_If_User_Id_Exists()
     {
         var cmd = new CreateUserCommand
         {
@@ -81,15 +81,7 @@ public class UserControllerTests
             .ThrowsAsync(new UserExistsException())
             .Verifiable();
         
-        var result = await _controller.Create(cmd, _cts.Token);
-        
-        Assert.Multiple(() =>
-        {
-            _senderMock.Verify();
-            Assert.That(result, Is.InstanceOf<BadRequestObjectResult>(), "Result not instance of BadRequestObjectResult.");
-            var acceptedResult = (BadRequestObjectResult)result;
-            Assert.That(acceptedResult.StatusCode, Is.EqualTo((int)HttpStatusCode.BadRequest), "Http Status Code is incorrect.");
-        });
+        Assert.ThrowsAsync<UserExistsException>(async () => await _controller.Create(cmd, _cts.Token));
     }
     
     [Test]
@@ -125,7 +117,7 @@ public class UserControllerTests
     }
     
     [Test]
-    public async Task Should_Return_BadRequest_On_Update_If_User_Does_Not_Exist()
+    public void Update_When_UserNotExist_Should_ThrowUserNotFoundException()
     {
         var cmd = new UpdateUserCommand
         {
@@ -140,15 +132,7 @@ public class UserControllerTests
             .ThrowsAsync(new UserNotFoundException())
             .Verifiable();
         
-        var result = await _controller.Update(cmd, _cts.Token);
-        
-        Assert.Multiple(() =>
-        {
-            _senderMock.Verify();
-            Assert.That(result, Is.InstanceOf<BadRequestObjectResult>(), "Result not instance of BadRequestResult.");
-            var acceptedResult = (BadRequestObjectResult)result;
-            Assert.That(acceptedResult.StatusCode, Is.EqualTo((int)HttpStatusCode.BadRequest), "Http Status Code is incorrect.");
-        });
+        Assert.ThrowsAsync<UserNotFoundException>(async () => await _controller.Update(cmd, _cts.Token));
     }
     
     [Test]
@@ -175,7 +159,7 @@ public class UserControllerTests
     }
     
     [Test]
-    public async Task Should_Return_BadRequest_On_Delete_If_User_Does_Not_Exist()
+    public void Delete_When_UserNotFound_Should_ThrowUserNotFoundException()
     {
         var cmd = new DeleteUserCommand()
         {
@@ -187,15 +171,7 @@ public class UserControllerTests
             .ThrowsAsync(new UserNotFoundException())
             .Verifiable();
         
-        var result = await _controller.Delete(cmd, _cts.Token);
-        
-        Assert.Multiple(() =>
-        {
-            _senderMock.Verify();
-            Assert.That(result, Is.InstanceOf<BadRequestObjectResult>(), "Result not instance of BadRequestResult.");
-            var acceptedResult = (BadRequestObjectResult)result;
-            Assert.That(acceptedResult.StatusCode, Is.EqualTo((int)HttpStatusCode.BadRequest), "Http Status Code is incorrect.");
-        });
+        Assert.ThrowsAsync<UserNotFoundException>(async () => await _controller.Delete(cmd, _cts.Token));
     }
     
     [Test]
@@ -276,25 +252,13 @@ public class UserControllerTests
     }
     
     [Test]
-    public async Task Should_Return_Null_On_GetUser_If_User_Not_Found()
+    public void GetUser_When_UserNotFound_Should_ThrowUserNotFoundException()
     {
         _senderMock.Setup(x => x.Send(It.IsAny<GetUserQuery>(), _cts.Token))
             .ThrowsAsync(new UserNotFoundException())
             .Verifiable();
         
-        var result = await _controller.GetUser(UserId, _cts.Token);
-        
-        Assert.Multiple(() =>
-        {
-            _senderMock.Verify();
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result, Is.InstanceOf<NotFoundObjectResult>());
-            var notFoundObjectResult = (NotFoundObjectResult)result;
-            Assert.That(notFoundObjectResult.Value, Is.Not.Null);
-            Assert.That(notFoundObjectResult.Value, Is.InstanceOf<Guid>());
-            var guidResponse = (Guid)notFoundObjectResult.Value!;
-            Assert.That(UserId, Is.EqualTo(guidResponse));
-        });
+        Assert.ThrowsAsync<UserNotFoundException>(async () => await _controller.GetUser(UserId, _cts.Token));
     }
     
     [TearDown]

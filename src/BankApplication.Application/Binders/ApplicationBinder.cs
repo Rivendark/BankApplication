@@ -8,7 +8,7 @@ public static class ApplicationBinder
 {
     public static void Bind(WebApplicationBuilder builder)
     {
-        builder.Services.AddSingleton<IAccountLock, AccountLock>();
+        builder.Services.AddTransient<IAccountLockService, AccountLockService>();
         builder.Services.AddTransient<IAccountValidationService, AccountValidationService>();
     }
 }

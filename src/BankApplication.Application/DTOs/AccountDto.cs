@@ -23,6 +23,6 @@ public sealed class AccountDto
         Name = account.Name;
         Balance = account.Balance;
         CreatedAtUtc = account.CreatedAtUtc;
-        BalanceChanges = account.BalanceChanges.Select(x => new BalanceChangeDto(x)).ToList();
+        BalanceChanges = account.GetBalanceChanges().Select(x => new BalanceChangeDto(x)).ToList();
     }
 }

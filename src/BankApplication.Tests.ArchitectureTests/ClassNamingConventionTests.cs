@@ -4,18 +4,18 @@ using BankApplication.Application.Mediatr;
 namespace BankApplication.Tests.ArchitectureTests;
 
 [TestFixture]
-public class ClassNamingConventionTests
+public class ClassNamingConventionTests : ArchitectureTestBase
 {
     [Test]
     public void Commands_Should_HaveNameEndingWith_Command()
     {
-        var types = Types.InCurrentDomain()
+        var types = Types.InAssemblies(GetAllAssemblies())
             .That()
-            .ResideInNamespace("BankApplication.Application.Commands")
+            .ResideInNamespace($"{NamespacePrefix}.Application.Commands")
             .And()
             .ImplementInterface(typeof(ICommand<>))
             .Or()
-            .ResideInNamespace("BankApplication.Application.Commands")
+            .ResideInNamespace($"{NamespacePrefix}.Application.Commands")
             .And()
             .ImplementInterface(typeof(ICommand));
             
@@ -36,11 +36,11 @@ public class ClassNamingConventionTests
     {
         var types = Types.InCurrentDomain()
             .That()
-            .ResideInNamespace("BankApplication.Application.Handlers.Commands")
+            .ResideInNamespace($"{NamespacePrefix}.Application.Handlers.Commands")
             .And()
             .ImplementInterface(typeof(ICommandHandler<>))
             .Or()
-            .ResideInNamespace("BankApplication.Application.Handlers.Commands")
+            .ResideInNamespace($"{NamespacePrefix}.Application.Handlers.Commands")
             .And()
             .ImplementInterface(typeof(ICommandHandler<,>));
             
@@ -61,11 +61,11 @@ public class ClassNamingConventionTests
     {
         var types = Types.InCurrentDomain()
             .That()
-            .ResideInNamespace("BankApplication.Application.Queries")
+            .ResideInNamespace($"{NamespacePrefix}.Application.Queries")
             .And()
             .ImplementInterface(typeof(IQuery<>))
             .Or()
-            .ResideInNamespace("BankApplication.Application.Queries")
+            .ResideInNamespace($"{NamespacePrefix}.Application.Queries")
             .And()
             .ImplementInterface(typeof(IQuery));
             
@@ -86,11 +86,11 @@ public class ClassNamingConventionTests
     {
         var types = Types.InCurrentDomain()
             .That()
-            .ResideInNamespace("BankApplication.Application.Handlers.Queries")
+            .ResideInNamespace($"{NamespacePrefix}.Application.Handlers.Queries")
             .And()
             .ImplementInterface(typeof(IQueryHandler<>))
             .Or()
-            .ResideInNamespace("BankApplication.Application.Handlers.Queries")
+            .ResideInNamespace($"{NamespacePrefix}.Application.Handlers.Queries")
             .And()
             .ImplementInterface(typeof(IQueryHandler<,>));
             
@@ -111,7 +111,7 @@ public class ClassNamingConventionTests
     {
         var types = Types.InCurrentDomain()
             .That()
-            .ResideInNamespace("BankApplication.Application.Notifications")
+            .ResideInNamespace($"{NamespacePrefix}.Application.Notifications")
             .And()
             .ImplementInterface(typeof(IDomainNotification));
             
@@ -132,7 +132,7 @@ public class ClassNamingConventionTests
     {
         var types = Types.InCurrentDomain()
             .That()
-            .ResideInNamespace("BankApplication.Application.Handlers.Notification")
+            .ResideInNamespace($"{NamespacePrefix}.Application.Handlers.Notification")
             .And()
             .ImplementInterface(typeof(IDomainNotificationHandler<>));
             
@@ -153,7 +153,7 @@ public class ClassNamingConventionTests
     {
         var types = Types.InCurrentDomain()
             .That()
-            .ResideInNamespace("BankApplication.Application.Validators");
+            .ResideInNamespace($"{NamespacePrefix}.Application.Validators");
             
         var result = types
             .Should()

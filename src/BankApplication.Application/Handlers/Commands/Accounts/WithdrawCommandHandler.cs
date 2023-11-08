@@ -17,7 +17,7 @@ public sealed class WithdrawCommandHandler(
         IPublisher publisher,
         ILogger<WithdrawCommandHandler> logger,
         IAccountValidationService validationService,
-        IAccountLock accountLock)
+        IAccountLockService accountLockService)
     : ICommandHandler<WithdrawCommand, AccountDto>
 {
     public async Task<AccountDto> Handle(WithdrawCommand request, CancellationToken cancellationToken)
@@ -30,7 +30,7 @@ public sealed class WithdrawCommandHandler(
                 throw new AccountNotFoundException();
             }
 
-            if (!await accountLock.TryGetLock(request.AccountId, cancellationToken))
+            if (!await accountLockService.TryGetLockAsync(request.AccountId, cancellationToken))
             {
                 logger.LogWarning($"Failed to secure lock on account. AccountId: {request.AccountId}");
                 throw new FailedToAchieveAccountLockException();
@@ -50,8 +50,8 @@ public sealed class WithdrawCommandHandler(
 
             validationService.ValidateWithdrawal(account, balanceChange);
 
-            account = await accountRepository.UpdateAccountBalanceAsync(balanceChange, cancellationToken);
-            await accountRepository.SaveBalanceChangeAsync(balanceChange, cancellationToken);
+            account.ApplyBalanceChange(balanceChange);
+            account = await accountRepository.UpdateAccountBalanceAsync(account, balanceChange, cancellationToken);
 
             await publisher.Publish(
                 new AccountBalanceChangedNotification(balanceChange, request.CorrelationId),
@@ -67,7 +67,7 @@ public sealed class WithdrawCommandHandler(
         }
         finally
         {
-            await accountLock.ReleaseLock(request.AccountId, cancellationToken);
+            await accountLockService.ReleaseLockAsync(cancellationToken);
             logger.LogInformation($"Released lock on account. AccountId: {request.AccountId}");
         }
     }
