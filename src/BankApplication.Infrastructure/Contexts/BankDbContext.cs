@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using BankApplication.Infrastructure.DBOs;
+using EntityFramework.Exceptions.Sqlite;
 
 namespace BankApplication.Infrastructure.Contexts;
 
@@ -11,6 +12,11 @@ public class BankDbContext : DbContext
     internal DbSet<AccountLockDbo> AccountLocks { get; set; }
 
     public BankDbContext(DbContextOptions<BankDbContext> options) : base(options) { }
+    
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.UseExceptionProcessor();
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

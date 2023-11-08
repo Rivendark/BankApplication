@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BankApplication.Infrastructure.Repositories;
 
-public class AccountLockRepository(BankDbContext context) : IAccountLockRepository
+public sealed class AccountLockRepository(BankDbContext context) : IAccountLockRepository
 {
     public async Task<AccountLock?> TryGetAccountLockAsync(Guid processorId, Guid accountId, CancellationToken token)
     {
@@ -23,15 +23,18 @@ public class AccountLockRepository(BankDbContext context) : IAccountLockReposito
 
                 context.AccountLocks.RemoveRange(expiredLocks);
                 await context.SaveChangesAsync(token);
-                
-                await context.AccountLocks.AddAsync(new AccountLockDbo(new AccountLock
+
+                var dbo = new AccountLockDbo(new AccountLock
                 {
                     AccountId = accountId,
                     ProcessorId = processorId
-                }), token);
+                });
+                await context.AccountLocks.AddAsync(dbo, token);
+                await context.SaveChangesAsync(token);
 
                 var accountLock = await context.AccountLocks
                     .Where(x => x.AccountId == accountId)
+                    .AsNoTracking()
                     .FirstOrDefaultAsync(token);
 
                 if (accountLock != null && accountLock.ProcessorId == processorId)
@@ -52,7 +55,11 @@ public class AccountLockRepository(BankDbContext context) : IAccountLockReposito
 
     public async Task ReleaseAccountLockAsync(AccountLock accountLock, CancellationToken token)
     {
-        context.AccountLocks.Remove(new AccountLockDbo(accountLock));
-        await context.SaveChangesAsync(token);
+        var dbo = await context.AccountLocks.FindAsync(new object?[] { accountLock.Id }, cancellationToken: token);
+        if (dbo is not null)
+        {
+            context.AccountLocks.Remove(dbo);
+            await context.SaveChangesAsync(token);
+        }
     }
 }

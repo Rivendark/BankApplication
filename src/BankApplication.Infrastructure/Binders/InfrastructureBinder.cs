@@ -12,11 +12,31 @@ public static class InfrastructureBinder
 {
     public static void Bind(WebApplicationBuilder builder)
     {
-        var keepAliveConnection = new SqliteConnection("DataSource=:memory:");
+        var keepAliveConnection = new SqliteConnection("DataSource=bankdb;mode=memory;cache=shared");
         keepAliveConnection.Open();
         
         builder.Services.AddDbContext<BankDbContext>(options =>
             options.UseSqlite(keepAliveConnection));
+        
+        var contextServiceProvider = builder.Services.BuildServiceProvider();
+        using (var scope = contextServiceProvider.CreateScope())
+        {
+            var scopedProvider = scope.ServiceProvider;
+
+            using (var myDb = scopedProvider.GetRequiredService<BankDbContext>())
+            {
+                // DEBUG CODE
+                // this returns script to create db objects as expected
+                // proving that MyDbContext is setup correctly
+                var script = myDb.Database.GenerateCreateScript();
+                // DEBUG CODE
+
+                // this does not create the db objects ( tables etc )
+                // this is not as expected and contrary to ms docs
+                var result = myDb.Database.EnsureCreated();
+                Console.WriteLine($"DB created: {result}");
+            }
+        }
         
         builder.Services.AddTransient<IUserRepository, UserRepository>();
         builder.Services.AddTransient<IAccountRepository, AccountRepository>();
