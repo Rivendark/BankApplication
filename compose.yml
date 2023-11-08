@@ -1,14 +1,16 @@
-﻿services:
+﻿name: bank_application_compose
+services:
   web:
+    container_name: BankApplication
     build:
       dockerfile: Dockerfile
       args:
-        - PASSWORD_ENV_SEEDED=bank.password
+        - PASSWORD_ENV_SEEDED=${PASSWORD_ENV_SEEDED}
     restart: unless-stopped
     ports:
       - "5000:5000"
       - "5001:5001"
     environment:
-      - ASPNETCORE_Kestrel__Certificates__Default__Password=bank.password
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=${PASSWORD_ENV_SEEDED}
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
       - ASPNETCORE_ENVIRONMENT=Development

@@ -1,11 +1,11 @@
 ﻿FROM mcr.microsoft.com/dotnet/aspnet:8.0-alpine AS base
-CMD ["dotnet", "dev-certs", "https"]
 WORKDIR /app
 EXPOSE 5000
 EXPOSE 5001
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0-alpine AS build
-ARG PASSWORD_ENV_SEEDED="bank.password"
+ARG PASSWORD_ENV_SEEDED
+RUN echo $PASSWORD_ENV_SEEDED
 RUN dotnet dev-certs https -ep /https/aspnetapp.pfx -p ${PASSWORD_ENV_SEEDED}
 
 WORKDIR .
@@ -35,4 +35,4 @@ ENV ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
 ENV ASPNETCORE_HTTPS_PORT=5001
 ENV ASPNETCORE_URLS https://+:5001;http://+:5000
 
-CMD ["dotnet", "BankApplication.Api.dll"]
+ENTRYPOINT ["dotnet", "BankApplication.Api.dll"]
