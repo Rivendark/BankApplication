@@ -9,7 +9,6 @@ public sealed class Account
     public string? Name { get; init; }
     public decimal Balance { get; set; }
     public DateTime CreatedAtUtc { get; set; } = DateTime.UtcNow;
-    public DateTime DeletedAtUtc { get; set; }
     public List<BalanceChange> BalanceChanges { private get; init; } = new ();
 
     public void ApplyBalanceChange(BalanceChange balanceChange)

@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Serilog;
 using System.Net;
-using System.Reflection;
 
 namespace BankApplication.Application.Middlewares;
 

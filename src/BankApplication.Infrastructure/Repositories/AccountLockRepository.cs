@@ -43,7 +43,7 @@ public sealed class AccountLockRepository(BankDbContext context) : IAccountLockR
                 await Task.Delay(250, token);
                 retry++;
             }
-            catch (UniqueConstraintException _)
+            catch (UniqueConstraintException)
             {
                 await Task.Delay(250, token);
                 retry++;
